@@ -43,8 +43,8 @@ Tm = [.7 .3; .3 .7];
 N = size(rew,1);
 output.choices = zeros(N,1);
 output.rewards = zeros(N,1);
-output.first_state = zeros(N,3);
-output.second_state = zeros(N,1);
+output.S_next = zeros(N,1);
+output.pairs = zeros(N,3);
 output.C = zeros(N,1);
 
 % Jungsun Yoo added for multiple number of second states
@@ -133,11 +133,11 @@ for t = 1:N
     
 %     output.S(t,1) = s-1;    
     
-    output.choices(t,1) = a;
-    output.rewards(t,1) = r;
-    output.second_state(t,1) = s;
+    output.A(t,1) = a;
+    output.R(t,1) = r;
+    output.S_next(t,1) = s;
     output.C(t,1) = tr_prob<tr;
-    output.first_state(t,:) = [current_state current_state_index];
+    output.pairs(t,:) = [current_state current_state_index];
     
 end
 
