@@ -14,8 +14,8 @@ function results = fit_model(true_params, output, likfunToUse, outputName)
 % end
 
 % true_params = true parameters
-b = true_params(1);                   % softmax inverse temperature
-lr = true_params(2);                  % learning rate
+lr = true_params(1);                  % learning rate
+b = true_params(2);                   % softmax inverse temperature
 lambda = true_params(3);              % eligibility trace decay
 w = true_params(4);                   % mixing weight
 gamma = true_params(5);
@@ -24,7 +24,7 @@ gamma = true_params(5);
 flags.pp_alpha = @(x)(pdf('beta', x, 1.1, 1.1));                  % Beta prior for \alphas (from Daw et al 2011 Neuron)
 flags.pp_pi = @(x)(pdf('beta', abs(x), 1.1, 1.1));                % symmetric Beta prior for \alpha bump (from Daw et al 2011 Neuron)
 % flags.pp_beta = @(x)(pdf('gamma', x, 1.2, 5));                  % Gamma prior for softmax \beta (from Daw et al 2011 Neuron)
-flags.pp_beta = @(x)(pdf('beta', x/5, 1.1, 1.1));                % Beta prior for \alphas (from Daw et al 2011 Neuron)
+flags.pp_beta = @(x)(pdf('beta', x/10, 1.1, 1.1));                % Beta prior for \alphas (from Daw et al 2011 Neuron)
 % flags.pp_betaC = @(x)(pdf('beta', (x+3)/6, 1.1, 1.1));            % Beta prior for \alphas (from Daw et al 2011 Neuron)
 
 % yjs added priors
@@ -83,10 +83,10 @@ results.params = numParams;
 resultsMat     = zeros(nSubs,6+numParams);
 
 % disp('Fitting TD Model');
-        transformParams = @(x)([1./[1+exp(-x(1))] ... %alpha [0 1]
-                                5./[1+exp(-x(2))] ... %beta [0 5]
-                                1./[1+exp(-x(3))] ... %w [0 1]
-                                1./[1+exp(-x(4))]]); %gamma [0 1]
+%         transformParams = @(x)([1./[1+exp(-x(1))] ... %alpha [0 1]
+%                                 5./[1+exp(-x(2))] ... %beta [0 5]
+%                                 1./[1+exp(-x(3))] ... %w [0 1]
+%                                 1./[1+exp(-x(4))]]); %gamma [0 1]
 
 for sub = 1:nSubs
 %     disp(['Fitting subject ' int2str(sub)]);
@@ -130,9 +130,10 @@ for sub = 1:nSubs
             % find min negative log likelihood = maximum likelihood for each
             % subject
         [x_recovered, nloglik,exitflag,output,grad,hessian] = fminunc(f, x0, options);
+%         [x_recovered, nloglik,exitflag,output,lambda_, grad,hessian] = fmincon(f, x0, options);
             
 %             if likfunToUse > 0
-%         disp(['subject ' num2str(sub) ': start ' num2str(starts) '(' num2str(nUnchanged) '): LL ' num2str(nloglik) ', params [', num2str(transformParams(x_recovered)) ']']);
+%         disp(['subject ' num2str(sub) ': start ' num2str(starts) '(' num2str(nUnchanged) '): params [', num2str(transformParams(x_recovered)) ']']);
 %             end
             
             % store min negative log likelihood and associated parameter values
@@ -160,7 +161,9 @@ for sub = 1:nSubs
 %                 if likfunToUse < 3
 %                     if likfunToUse > 0
                 results.alpha(sub) = 1./[1+exp(-x_recovered(1))];
-                results.beta(sub)  = 5./[1+exp(-x_recovered(2))];
+                results.beta(sub)  = 10./[1+exp(-x_recovered(2))];
+                results.w(sub) = 1./[1+exp(-x_recovered(3))];
+                results.gamma(sub) = 1./[1+exp(-x_recovered(4))];
                 results.x_recovered(sub,:) = x_recovered;
 %                 resultsMat(sub,8) = 1./[1+exp(-x(1))]; % alpha
 %                 resultsMat(sub,9) = 5./[1+exp(-x(2))]; % beta
@@ -263,6 +266,6 @@ for sub = 1:nSubs
     
 end
 
-save(outputName, 'results');
+% save(outputName, 'results');
 
 end

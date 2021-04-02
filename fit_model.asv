@@ -14,8 +14,8 @@ function results = fit_model(true_params, output, likfunToUse, outputName)
 % end
 
 % true_params = true parameters
-b = true_params(1);                   % softmax inverse temperature
-lr = true_params(2);                  % learning rate
+lr = true_params(1);                  % learning rate
+b = true_params(2);                   % softmax inverse temperature
 lambda = true_params(3);              % eligibility trace decay
 w = true_params(4);                   % mixing weight
 gamma = true_params(5);
@@ -82,14 +82,14 @@ results.params = numParams;
 % Set up results matrix
 resultsMat     = zeros(nSubs,6+numParams);
 
-disp('Fitting TD Model');
+% disp('Fitting TD Model');
         transformParams = @(x)([1./[1+exp(-x(1))] ... %alpha [0 1]
                                 5./[1+exp(-x(2))] ... %beta [0 5]
                                 1./[1+exp(-x(3))] ... %w [0 1]
                                 1./[1+exp(-x(4))]]); %gamma [0 1]
 
 for sub = 1:nSubs
-    disp(['Fitting subject ' int2str(sub)]);
+%     disp(['Fitting subject ' int2str(sub)]);
     
     resultsMat(sub,1) = sub;%dataToFit(sub).subID; % save subID
     
@@ -219,7 +219,7 @@ for sub = 1:nSubs
 
 %                 results.AIC(sub) = 2*length(x) + 2*useLogLik;
 %                 results.BIC(sub) = 0.5*(log(length(dataToFit(sub).probet)*.8) * length(x)) + useLogLik;
-                results.model(sub) = likfunToUse;
+                results.model(sub,:) = likfunToUse;
                 results.exitflag(sub) = exitflag;
                 results.output(sub) = output;
                 results.grad(sub,:) = grad;
@@ -240,7 +240,7 @@ for sub = 1:nSubs
 %           ', final BIC ' num2str(results.BIC(sub)) ...
 %           ', final Laplace ' num2str(results.laplace(sub))]);
 
-    save(outputName, 'results');
+%     save(outputName, 'results');
     
 %     if likfunToUse == 1
 %         cHeader = {'subID','nloglik','AIC','BIC','model','laplace','betaC','alpha','beta'}; %dummy header

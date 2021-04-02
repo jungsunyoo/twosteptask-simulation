@@ -22,7 +22,7 @@ states_total = max(output.first_state(:,3));
 
 % Lower_bound + ((Upper_bound-Lower_bound) * inverse logit(param))
 lr              =  0 + (1 * (1./[1+exp(-lr)]));
-beta            =  0 + (5 * (1./[1+exp(-beta)]));
+beta            =  0 + (10 * (1./[1+exp(-beta)]));
 w               =  0 + (1 * (1./[1+exp(-w)]));
 gamma           =  0 + (1 * (1./[1+exp(-gamma)]));
 

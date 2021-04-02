@@ -8,8 +8,8 @@ function output = MBMF_stochastic_1choice_rew_nstates_decay_sim(x,rew, states_to
 %
 % INPUTS:
 %   x - [1 x 4] vector of parameters, where:
-%       x(1) - softmax inverse temperature
-%       x(2) - learning rate
+%       x(1) - learning rate
+%       x(2) - softmax inverse temperature
 %       x(3) - eligibility trace decay
 %       x(4) - mixing weight
 %       x(5) - decay rate gamma
@@ -26,8 +26,9 @@ function output = MBMF_stochastic_1choice_rew_nstates_decay_sim(x,rew, states_to
 % Wouter Kool, Aug 2016, based on code written by Sam Gershman
 
 % parameters
-b = x(1);                   % softmax inverse temperature
-lr = x(2);                  % learning rate
+lr = x(1);                  % learning rate
+b = x(2);                   % softmax inverse temperature
+
 lambda = x(3);              % eligibility trace decay
 w = x(4);                   % mixing weight
 gamma = x(5);
