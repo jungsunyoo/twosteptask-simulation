@@ -111,15 +111,6 @@ for sub = 1:nSubs
 
         %define likelihood function
         f = @(x) likfun_TD(x,dataToFit, flags);
-%         if likfunToUse == 1
-%             f = @(x) likfun_TD(x,dataToFit(sub), flags);
-%         elseif likfunToUse == 2
-%             f = @(x) likfun_sampler(x,dataToFit(sub),flags);
-%         elseif likfunToUse == 3
-%             f = @(x) likfun_hybrid(x,dataToFit(sub), flags);
-%         elseif likfunToUse == 0
-%             f = @(x) likfun_null(x, dataToFit(sub), flags);
-%         end
 
         %set fmincon starting values
         x0 = zeros(1,numParams); % initialize at zero
@@ -130,36 +121,10 @@ for sub = 1:nSubs
             % find min negative log likelihood = maximum likelihood for each
             % subject
         [x_recovered, nloglik,exitflag,output,grad,hessian] = fminunc(f, x0, options);
-%         [x_recovered, nloglik,exitflag,output,lambda_, grad,hessian] = fmincon(f, x0, options);
-            
-%             if likfunToUse > 0
-%         disp(['subject ' num2str(sub) ': start ' num2str(starts) '(' num2str(nUnchanged) '): params [', num2str(transformParams(x_recovered)) ']']);
-%             end
-            
             % store min negative log likelihood and associated parameter values
             if starts == 1 || nloglik < results.nLogLik(sub)
                 nUnchanged = 0; %reset to 0 if likelihood changes
                 results.nLogLik(sub) = nloglik;
-%                 resultsMat(sub,2)    = nloglik;
-
-%                 if likfunToUse > 1
-%                 results.alphaEvoked(sub)      = 1./[1+exp(-x(4))];
-%                 resultsMat(sub,6+numParams)   = 1./[1+exp(-x(4))]; % alphaEvoked
-%                 end
-                
-%                 if likfunToUse == 0
-%                     results.betaC(sub) = -3 + 6./[1+exp(-x(1))];
-%                     resultsMat(sub,7)  = -3 + 6./[1+exp(-x(1))]; % betaC
-%                 end
-                    
-                
-%                 if likfunToUse > 0
-% %                 results.betaC(sub) = -3 + 6./[1+exp(-x(3))];
-%                 resultsMat(sub,7)  = -3 + 6./[1+exp(-x(3))]; % betaC
-%                 end
-
-%                 if likfunToUse < 3
-%                     if likfunToUse > 0
                 results.alpha(sub) = 1./[1+exp(-x_recovered(1))];
                 results.beta(sub)  = 10./[1+exp(-x_recovered(2))];
                 results.w(sub) = 1./[1+exp(-x_recovered(3))];

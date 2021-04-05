@@ -113,14 +113,14 @@ for t = 1:N
     % Decaying unchosen states and/or action pairs for this trial
     for s_ = 1:nstates
         if s_ ~= s
-            Q2(s_) = Q2(s_) * gamma;
+            Q2(s_) = Q2(s_) * (1-gamma);
         end
     end
     
     for s_ = 1:length(states_total)
         for a_ = 1:2
             if s_~=current_state_index || a_~=a
-                Qmf(s_,a_) = Qmf(s_,a_) * gamma;
+                Qmf(s_,a_) = Qmf(s_,a_) * (1-gamma);
             end
         end
     end

@@ -103,17 +103,13 @@ loglik = sum(log(probs1)) + sum(log(probs2));
 %compute negative log likelihood
 nloglik = loglik*-1;
 
-% % yjs added priors
-% flags.pp_gamma =  @(x)(pdf('beta', x, 1.1, 1.1));
-% flags.pp_w =  @(x)(pdf('beta', x, 1.1, 1.1));
-
 if (true)
     % add in the log prior probability of the parameters
     nloglik = nloglik - log(flags.pp_alpha(lr));
     nloglik = nloglik - log(flags.pp_beta(beta));
     nloglik = nloglik - log(flags.pp_gamma(gamma));
     nloglik = nloglik - log(flags.pp_w(w));
-%     nloglik = nloglik - log(flags.pp_betaC(beta_c));
+
 end
 
 end

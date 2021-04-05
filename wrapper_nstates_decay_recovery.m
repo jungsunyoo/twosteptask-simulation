@@ -78,7 +78,8 @@ states_total = [states_total [1:nchoosek(nstates,2)]'];
 
 
 corr_table = zeros(nrits, 8);
-CI_table = zeros(nrits, 4);
+CI_table = zeros(nrits, 8);
+raw_CI_table = zeros(nrits, 4);
 raw_recovered = zeros(nrits, 4);
     for i = 1:nrits
 % counter=0;
@@ -117,10 +118,24 @@ raw_recovered = zeros(nrits, 4);
     %         end
     %     avg = mean(avg_param,1); % will result in four params
 %         corr_table(i, :) = [b_i lr_i w_i g_i results.x_recovered];
-        corr_table(i, :) = [lr_i b_i w_i g_i results.alpha results.beta results.w results.gamma];
+        corr_table(i, :) = [lr_i results.alpha b_i results.beta w_i results.w g_i results.gamma];
         raw_recovered(i,:) = results.x_recovered;
         rawInterval = sqrt(diag(inv(squeeze(results.hessian))));
-        CI_table(i, :) = rawInterval';
+%         CI_table(i, :) = rawInterval';
+        
+        upper_bound = results.x_recovered + 2 * rawInterval';
+        lower_bound = results.x_recovered - 2 * rawInterval';
+        
+        CI_table(i,1) = 1./[1+exp(-upper_bound(1))]; % transformed upper bound for alpha
+        CI_table(i,2) = 1./[1+exp(-lower_bound(1))]; % transformed lower bound for alpha
+        CI_table(i,3) = 10./[1+exp(-upper_bound(2))]; % transformed upper bound for beta
+        CI_table(i,4) = 10./[1+exp(-lower_bound(2))]; % transformed lower bound for beta
+        CI_table(i,5) = 1./[1+exp(-upper_bound(3))]; % transformed upper bound for w
+        CI_table(i,6) = 1./[1+exp(-lower_bound(3))]; % transformed lower bound for w
+        CI_table(i,7) = 1./[1+exp(-upper_bound(4))]; % transformed upper bound for gamma
+        CI_table(i,8) = 1./[1+exp(-lower_bound(4))]; % transformed lower bound for gamma        
+
+                
     end
 %                 params = polyfit(zscore(ws),zscore(rewardrate),1); % estimate linear effect between w and reward rate
                 
