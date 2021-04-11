@@ -1,5 +1,5 @@
 % Environment for testing model fit function
-function results = fit_model(true_params, output, likfunToUse, outputName)
+function results = fit_model(true_params, output, likfunToUse)
 
 % This function takes as input a data set, a likelihood function (0, 1 or 2 -
 % 0 for null, 1 for TD and 2 for sampler, and the name where the data should be saved

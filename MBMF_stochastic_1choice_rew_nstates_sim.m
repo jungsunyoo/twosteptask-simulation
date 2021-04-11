@@ -34,7 +34,7 @@ tr = 0.7;                   % common transition probability
 
 % initialization
 % Qmf = zeros(1,2);           % Q(s,a): state-action value function for Q-learning
-Qmf = zeros(length(states_total),2);
+Qmf = zeros(size(states_total,1),2);
 Q2 = zeros(nstates,1);
 % Tm = [.3 .7; .7 .3];        % transition matrix
 Tm = [.7 .3; .3 .7];

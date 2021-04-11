@@ -95,22 +95,39 @@ raw_recovered = zeros(nrits, 4);
 %                 counter=counter+1;
 %                 avg_param = zeros(nrits, 4);
         lr_i = rand;
-        b_i = randsample(10,1);        
+        b_i = rand * 10;        
         g_i = rand;
         w_i = rand;
+        
+%         alpha_sample = rand;
+%         alpha_evoked = rand;
+%         beta = rand*10;%round(rand*10);%randsample(10, 1);
+% %         lambda = 0.5;
+%         w = rand;
+        
 
-        disp(['Iteration ' num2str(i) ' recovering for true parameters: alpha: ', num2str(lr_i), ' beta: ', num2str(b_i),' w: ', num2str(w_i), ' gamma: ', num2str(g_i) ])
+%         disp(['Iteration ' num2str(i) ' recovering for true parameters: alpha: ', num2str(lr_i), ' beta: ', num2str(b_i),' w: ', num2str(w_i), ' gamma: ', num2str(g_i) ])
     %         for i = 1:nrits
 
     %                     disp(['Iteration ', num2str(i), ' of ', num2str(nrits) ' of nstate=' num2str(nstates)])
 
         rewards = generate_rewards_nstates(nrtrials,data.bounds,data.sd,data.choices, nstates); %#ok<NASGU>
-        x = [lr_i b_i lambda w_i g_i]; %#ok<NASGU>                                       
+        
+        
+        
+        
         % Simulation
+        
+%         % If TD model
+        x = [lr_i b_i lambda w_i g_i];
         output = MBMF_stochastic_1choice_rew_nstates_decay_sim(x,rewards, states_total, nstates);
 
+        % If sampler model
+%         x = [alpha_sample alpha_evoked beta lambda w]; 
+%         output = MBMF_stochastic_1choice_rew_nstates_sampler_decay_sim(x,rewards, states_total, nstates);
+
         % Parameter recovery
-        results = fit_model(x, output, 'likefun_TD', 'testing');
+        results = fit_model(x, output, 'likefun_TD');
     %     avg_param(i,:) = results.x_recovered;
         % making 
 

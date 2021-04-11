@@ -80,7 +80,7 @@ for trial = 1:N%numTrials %for each trial
         end
     end
     
-    for s_ = 1:length(states_total)
+    for s_ = 1:states_total
         for a_ = 1:2
             if s_~=current_state_index || a_~=a
                 Qmf(s_,a_) = Qmf(s_,a_) * (1-gamma);
