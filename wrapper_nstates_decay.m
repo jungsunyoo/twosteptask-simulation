@@ -82,27 +82,27 @@ for i = 1:nrits
     
     rewards = generate_rewards_nstates(nrtrials,data.bounds,data.sd,data.choices, nstates); %#ok<NASGU>
     
-    for b_i = 1:length(bs) % iterate over different learning rates
+    for lr_i = 1:length(lrs) % iterate over different learning rates
         
-        for lr_i = 1:length(lrs) % and inverse temperatures
+        for b_i = 1:length(bs) % and inverse temperatures
             
             rewardrate = zeros(1,length(ws));
             for g_i = 1:length(gamma)
                 for w_i = 1:length(ws)
                 
                 
-                    x = [bs(b_i) lrs(lr_i) lambda ws(w_i) gamma(g_i)]; %#ok<NASGU>
+                    x = [lrs(lr_i) bs(b_i) lambda ws(w_i) gamma(g_i)]; %#ok<NASGU>
                     % YJS added
     %                 data.simulationfunction = 'MBMF_stochastic_1choice_rew_nstates_sim';
     %                 output = eval([data.simulationfunction,'(x,rewards, states_total, nstates)']); % simulate behavior
                     output = MBMF_stochastic_1choice_rew_nstates_decay_sim(x,rewards, states_total, nstates);
 
-                    rewardrate(w_i) = sum(output.R)/length(output.R); % store reward rate for each value of w
+                    rewardrate(w_i) = sum(output.rewards)/length(output.rewards); % store reward rate for each value of w
                 end 
                 params = polyfit(zscore(ws),zscore(rewardrate),1); % estimate linear effect between w and reward rate
 
-                data.slope(b_i,lr_i, g_i, i) = params(1);
-                data.rewardrate(:,b_i,lr_i,g_i, i) = rewardrate;                
+                data.slope(lr_i, b_i, g_i, i) = params(1);
+                data.rewardrate(:,lr_i,b_i,g_i, i) = rewardrate;                
             end
             
 
@@ -114,8 +114,9 @@ end
 data.lrs = lrs;
 data.bs = bs;
 data.lambda = lambda;
+data.gamma = gamma;
 
-cd /Users/yoojungsun0/simulation/tradeoffs/simulations/results/with_decay
+cd /Users/yoojungsun0/simulation/tradeoffs/simulations/results/TD
 
 eval(['save MBMF_stochastic_1choice_rew_', num2str(nstates) ,'states_decay_sim data']);
 

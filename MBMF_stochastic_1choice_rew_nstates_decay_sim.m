@@ -117,7 +117,7 @@ for t = 1:N
         end
     end
     
-    for s_ = 1:length(states_total)
+    for s_ = 1:size(states_total,1)
         for a_ = 1:2
             if s_~=current_state_index || a_~=a
                 Qmf(s_,a_) = Qmf(s_,a_) * (1-gamma);

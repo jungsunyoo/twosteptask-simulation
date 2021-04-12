@@ -106,7 +106,7 @@ raw_recovered = zeros(nrits, 4);
 %         w = rand;
         
 
-%         disp(['Iteration ' num2str(i) ' recovering for true parameters: alpha: ', num2str(lr_i), ' beta: ', num2str(b_i),' w: ', num2str(w_i), ' gamma: ', num2str(g_i) ])
+        disp(['Iteration ' num2str(i) ' recovering for true parameters: alpha: ', num2str(lr_i), ' beta: ', num2str(b_i),' w: ', num2str(w_i), ' gamma: ', num2str(g_i) ])
     %         for i = 1:nrits
 
     %                     disp(['Iteration ', num2str(i), ' of ', num2str(nrits) ' of nstate=' num2str(nstates)])

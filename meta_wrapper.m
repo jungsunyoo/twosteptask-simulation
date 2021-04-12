@@ -4,10 +4,11 @@ clear;clc;
 
 % Meta-wrapper for executing simulations
 nrtrials = 200;
+nrits = 1000;
 for nstates = 2:20
-    clearvars -except nstates nrtrials
+    clearvars -except nstates nrtrials nrits
 %     data = wrapper_nstates(1000,nstates, nrtrials);
-    data = wrapper_nstates_decay(1000,nstates, nrtrials);
+    data = wrapper_nstates_decay(nrits,nstates, nrtrials);
 end
 
 % % Meta-wrapper for visualizing & saving data
