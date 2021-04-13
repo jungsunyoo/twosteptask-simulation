@@ -45,12 +45,12 @@ dataToFit = output;
 %% Set up parameter space
 
 % Alpha1 - learning /decay rate
-param(1).name = 'alpha1';
+param(1).name = 'alpha';
 param(1).lb = 0;
 param(1).ub = 1;
 
 % Alpha2 - learning /decay rate
-param(2).name = 'alpha2';
+param(2).name = 'kappa';
 param(2).lb = 0;
 param(2).ub = 1;
 
