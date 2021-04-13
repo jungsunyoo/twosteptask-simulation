@@ -43,31 +43,32 @@ nSubs = 1;
 dataToFit = output;
 
 %% Set up parameter space
-
-% Alpha1 - learning /decay rate
+lb = -100;
+ub = 100;
+% Alpha - learning /decay rate
 param(1).name = 'alpha';
-param(1).lb = 0;
-param(1).ub = 1;
+param(1).lb = lb;
+param(1).ub = ub;
 
-% Alpha2 - learning /decay rate
+% Kappa - coefficient for learning /decay rate in counterfactual
 param(2).name = 'kappa';
-param(2).lb = 0;
-param(2).ub = 1;
+param(2).lb = lb;
+param(2).ub = ub;
 
 %Beta - explore/exploit tradeoff
 param(3).name = 'beta';
-param(3).lb = .001;
-param(3).ub = 10;
+param(3).lb = lb;
+param(3).ub = ub;
 
 % w - model-based vs. model-free
 param(4).name = 'w';
-param(4).lb = 0;
-param(4).ub = 1;
+param(4).lb = lb;
+param(4).ub = ub;
 
 % gamma - decay rate of unchosen options
 param(5).name = 'gamma';
-param(5).lb = 0;
-param(5).ub = 1;
+param(5).lb = lb;
+param(5).ub = ub;
 
 
 %% Important things to pass to fmincon
@@ -100,7 +101,7 @@ for sub = 1:nSubs
     
     resultsMat(sub,1) = sub;%dataToFit(sub).subID; % save subID
     
-    trueX = [lr kappa b w gamma];
+%     trueX = [lr kappa b w gamma];
 %     try  %display true parameters
 %         trueX = 
 %         %[dataToFit(sub).alpha dataToFit(sub).beta dataToFit(sub).beta_c dataToFit(sub).alpha_evoked];

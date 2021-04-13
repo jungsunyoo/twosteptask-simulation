@@ -41,26 +41,27 @@ nSubs = 1;
 dataToFit = output;
 
 %% Set up parameter space
-
+lb = -100;
+ub = 100;
 % Alpha - learning /decay rate
 param(1).name = 'alpha';
-param(1).lb = 0;
-param(1).ub = 1;
+param(1).lb = lb;
+param(1).ub = ub;
 
 %Beta - explore/exploit tradeoff
 param(2).name = 'beta';
-param(2).lb = .001;
-param(2).ub = 10;
+param(2).lb = lb;
+param(2).ub = ub;
 
 % w - model-based vs. model-free
 param(3).name = 'w';
-param(3).lb = 0;
-param(3).ub = 1;
+param(3).lb = lb;
+param(3).ub = ub;
 
 % gamma - decay rate of unchosen options
 param(4).name = 'gamma';
-param(4).lb = 0;
-param(4).ub = 1;
+param(4).lb = lb;
+param(4).ub = ub;
 
 
 %% Important things to pass to fmincon
@@ -91,18 +92,7 @@ resultsMat     = zeros(nSubs,6+numParams);
 for sub = 1:nSubs
 %     disp(['Fitting subject ' int2str(sub)]);
     
-    resultsMat(sub,1) = sub;%dataToFit(sub).subID; % save subID
-    
-    trueX = [lr b w gamma];
-%     try  %display true parameters
-%         trueX = 
-%         %[dataToFit(sub).alpha dataToFit(sub).beta dataToFit(sub).beta_c dataToFit(sub).alpha_evoked];
-%     catch %display true parameters (no alpha evoked)
-%         trueX = 
-%         [dataToFit(sub).alpha dataToFit(sub).beta dataToFit(sub).beta_c];
-%     end
-
-%     disp(['True params: ' num2str(trueX)]);
+    resultsMat(sub,1) = sub;
 
     nUnchanged = 0;
     starts = 0;
