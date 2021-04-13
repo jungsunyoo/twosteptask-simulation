@@ -83,8 +83,8 @@ raw_CI_table = zeros(nrits, 5);
 raw_recovered = zeros(nrits, 5);
     for i = 1:nrits
 
-        lr_1_i = rand;
-        lr_2_i = rand;
+        lr_i = rand;
+        k_i = rand;
         b_i = rand * 10; %randsample(10,1);        
         g_i = rand;
         w_i = rand;
@@ -95,14 +95,14 @@ raw_recovered = zeros(nrits, 5);
 %         w = rand;
         
 
-        disp(['Iteration ' num2str(i) ' recovering for true parameters: alpha 1: ', num2str(lr_1_i), 'alpha 2: ', num2str(lr_2_i) ' beta: ', num2str(b_i),' w: ', num2str(w_i), ' gamma: ', num2str(g_i) ])
+        disp(['Iteration ' num2str(i) ' recovering for true parameters: alpha : ', num2str(lr_i), ' kappa : ', num2str(k_i) ' beta: ', num2str(b_i),' w: ', num2str(w_i), ' gamma: ', num2str(g_i) ])
 
         rewards = generate_rewards_nstates(nrtrials,data.bounds,data.sd,data.choices, nstates); %#ok<NASGU>
                 
         % Simulation
         
 %         % If TD model
-        x = [lr_1_i lr_2_i b_i lambda w_i g_i];
+        x = [lr_i k_i b_i lambda w_i g_i];
 %         output = MBMF_stochastic_1choice_rew_nstates_decay_sim(x,rewards, states_total, nstates);
         output = MBMF_stochastic_1choice_rew_nstates_counterfactual_decay_sim(x,rewards, states_total, nstates);
 
@@ -110,7 +110,7 @@ raw_recovered = zeros(nrits, 5);
 %         results = fit_model(x, output, 'likefun_TD', 'testing');
         results = fit_model_counterfactual(x, output);
 
-        corr_table(i, :) = [lr_1_i results.alpha1 lr_2_i results.alpha2 b_i results.beta w_i results.w g_i results.gamma];
+        corr_table(i, :) = [lr_i results.alpha k_i results.kappa b_i results.beta w_i results.w g_i results.gamma];
         raw_recovered(i,:) = results.x_recovered;
         rawInterval = sqrt(diag(inv(squeeze(results.hessian))));
 

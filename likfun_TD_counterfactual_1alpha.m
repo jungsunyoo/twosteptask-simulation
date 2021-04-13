@@ -7,7 +7,7 @@ bandits   = [1 2];
 
 % Parameters
 
-lr1 = params(1);
+lr = params(1);
 % lr2 = params(2);
 beta = params(2);
 w = params(3);
@@ -22,7 +22,7 @@ states_total = max(output.first_state(:,3));
 
 
 % Lower_bound + ((Upper_bound-Lower_bound) * inverse logit(param))
-lr1              =  0 + (1 * (1./[1+exp(-lr1)]));
+lr              =  0 + (1 * (1./[1+exp(-lr)]));
 % lr2              =  0 + (1 * (1./[1+exp(-lr2)]));
 beta            =  0 + (10 * (1./[1+exp(-beta)]));
 w               =  0 + (1 * (1./[1+exp(-w)]));
@@ -73,17 +73,18 @@ for trial = 1:N%numTrials %for each trial
     
     % update values for next trial
     dtQ(1) = Q2(s) - Qmf(current_state_index,a);
-    Qmf(current_state_index,a) = Qmf(current_state_index,a) + lr1*dtQ(1); % update
-    
+    Qmf(current_state_index,a) = Qmf(current_state_index,a) + lr*dtQ(1); % update
+    % updating for counterfactual Qmf
+    Qmf(current_state_index, a_cf) = Qmf(current_state_index,a_cf) + lr*(Q2(s_cf)-Qmf(current_state_index,a_cf));    
     dtQ(2) = r - Q2(s);                                   % prediction error (2nd choice)
-    Q2(s) = Q2(s) + lr1*dtQ(2);                          % update TD value function
+    Q2(s) = Q2(s) + lr*dtQ(2);                          % update TD value function
     
     % Update counterfactual
-    Q2(s_cf) = Q2(s_cf) + lr1 * (r_cf - Q2(s_cf));
+    Q2(s_cf) = Q2(s_cf) + lr * (r_cf - Q2(s_cf));
     
-    Qmf(current_state_index,a) = Qmf(current_state_index,a) + lambda*lr1*dtQ(2);                     % eligibility trace
+    Qmf(current_state_index,a) = Qmf(current_state_index,a) + lambda*lr*dtQ(2);                     % eligibility trace
     % Jungsun added for counterfactual eligiility trace
-    Qmf(current_state_index,a_cf) = Qmf(current_state_index,a_cf) + lambda * lr1 * (r_cf - Q2(s_cf));
+    Qmf(current_state_index,a_cf) = Qmf(current_state_index,a_cf) + lambda * lr * (r_cf - Q2(s_cf));
     
     % Decaying unchosen states and/or action pairs for this trial
     for s_ = 1:nstates
@@ -118,7 +119,7 @@ nloglik = loglik*-1;
 
 if (true)
     % add in the log prior probability of the parameters
-    nloglik = nloglik - log(flags.pp_alpha1(lr1));
+    nloglik = nloglik - log(flags.pp_alpha(lr));
 %     nloglik = nloglik - log(flags.pp_alpha2(lr2));
     nloglik = nloglik - log(flags.pp_beta(beta));
     nloglik = nloglik - log(flags.pp_gamma(gamma));

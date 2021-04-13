@@ -6,8 +6,8 @@ clear;clc;
 
 nrits = 1000;
 for nstates = 2:5
+%     nrtrials = 200;    
     nrtrials = 100 * size(nchoosek(1:nstates,2),1);
-%     nrtrials = 200;
     clearvars -except nstates nrtrials nrits
 %     data = wrapper_nstates(1000,nstates, nrtrials);
     data = wrapper_nstates_counter_1alpha_decay_recovery(nrits,nstates, nrtrials);

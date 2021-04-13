@@ -14,7 +14,7 @@ function results = fit_model_counterfactual_1alpha(true_params, output)
 % end
 
 % true_params = true parameters
-lr1 = true_params(1);                  % learning rate
+lr = true_params(1);                  % learning rate
 % lr2 = true_params(2);
 b = true_params(2);                   % softmax inverse temperature
 lambda = true_params(3);              % eligibility trace decay
@@ -22,7 +22,7 @@ w = true_params(4);                   % mixing weight
 gamma = true_params(5);
 
 % Prior distributions for parameters
-flags.pp_alpha1 = @(x)(pdf('beta', x, 1.1, 1.1));                  % Beta prior for \alphas (from Daw et al 2011 Neuron)
+flags.pp_alpha = @(x)(pdf('beta', x, 1.1, 1.1));                  % Beta prior for \alphas (from Daw et al 2011 Neuron)
 % flags.pp_alpha2 = @(x)(pdf('beta', x, 1.1, 1.1));                  % Beta prior for \alphas (from Daw et al 2011 Neuron)
 flags.pp_pi = @(x)(pdf('beta', abs(x), 1.1, 1.1));                % symmetric Beta prior for \alpha bump (from Daw et al 2011 Neuron)
 % flags.pp_beta = @(x)(pdf('gamma', x, 1.2, 5));                  % Gamma prior for softmax \beta (from Daw et al 2011 Neuron)
@@ -45,7 +45,7 @@ dataToFit = output;
 %% Set up parameter space
 
 % Alpha1 - learning /decay rate
-param(1).name = 'alpha1';
+param(1).name = 'alpha';
 param(1).lb = 0;
 param(1).ub = 1;
 
@@ -100,7 +100,7 @@ for sub = 1:nSubs
     
     resultsMat(sub,1) = sub;%dataToFit(sub).subID; % save subID
     
-    trueX = [lr1 b w gamma];
+    trueX = [lr b w gamma];
 %     try  %display true parameters
 %         trueX = 
 %         %[dataToFit(sub).alpha dataToFit(sub).beta dataToFit(sub).beta_c dataToFit(sub).alpha_evoked];
@@ -132,7 +132,7 @@ for sub = 1:nSubs
             if starts == 1 || nloglik < results.nLogLik(sub)
                 nUnchanged = 0; %reset to 0 if likelihood changes
                 results.nLogLik(sub) = nloglik;
-                results.alpha1(sub) = 1./[1+exp(-x_recovered(1))];
+                results.alpha(sub) = 1./[1+exp(-x_recovered(1))];
 %                 results.alpha2(sub) = 1./[1+exp(-x_recovered(2))];
                 results.beta(sub)  = 10./[1+exp(-x_recovered(2))];
                 results.w(sub) = 1./[1+exp(-x_recovered(3))];
