@@ -30,7 +30,7 @@ flags.pp_beta = @(x)(pdf('beta', x/10, 1.1, 1.1));                % Beta prior f
 % yjs added priors
 flags.pp_gamma =  @(x)(pdf('beta', x, 1.1, 1.1));
 flags.pp_w =  @(x)(pdf('beta', x, 1.1, 1.1));
-
+flags.pp_lambda =  @(x)(pdf('beta', x, 1.1, 1.1));
 
 % Load simulated data
 % simData = load(data);
@@ -41,8 +41,8 @@ nSubs = 1;
 dataToFit = output;
 
 %% Set up parameter space
-lb = -100;
-ub = 100;
+lb = 0;
+ub = 1;
 % Alpha - learning /decay rate
 param(1).name = 'alpha';
 param(1).lb = lb;
@@ -50,8 +50,8 @@ param(1).ub = ub;
 
 %Beta - explore/exploit tradeoff
 param(2).name = 'beta';
-param(2).lb = lb;
-param(2).ub = ub;
+param(2).lb = 0.001;
+param(2).ub = 10;
 
 % w - model-based vs. model-free
 param(3).name = 'w';
@@ -63,6 +63,10 @@ param(4).name = 'gamma';
 param(4).lb = lb;
 param(4).ub = ub;
 
+% lambda - eligibility trace
+param(5).name = 'lambda';
+param(5).lb = lb;
+param(5).ub = ub;
 
 %% Important things to pass to fmincon
 numParams = length(param); %specify number of parameters
@@ -119,6 +123,7 @@ for sub = 1:nSubs
                 results.beta(sub)  = 10./[1+exp(-x_recovered(2))];
                 results.w(sub) = 1./[1+exp(-x_recovered(3))];
                 results.gamma(sub) = 1./[1+exp(-x_recovered(4))];
+                results.lambda(sub) = 1./[1+exp(-x_recovered(5))];
                 results.x_recovered(sub,:) = x_recovered;
 %                 resultsMat(sub,8) = 1./[1+exp(-x(1))]; % alpha
 %                 resultsMat(sub,9) = 5./[1+exp(-x(2))]; % beta

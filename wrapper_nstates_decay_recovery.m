@@ -63,7 +63,7 @@ lrs = 0:1/(nrbins-1):1;
 gamma = 0:1/(nrbins-1):1;
 ws = 0:1/(nrbins-1):1;
 
-lambda = 0.5;
+% lambda = 0.5;
 % nrtrials = 200; %201;
 
 
@@ -77,10 +77,10 @@ states_total = nchoosek(1:nstates,2);
 states_total = [states_total [1:nchoosek(nstates,2)]'];
 
 
-corr_table = zeros(nrits, 8);
-CI_table = zeros(nrits, 8);
-raw_CI_table = zeros(nrits, 4);
-raw_recovered = zeros(nrits, 4);
+corr_table = zeros(nrits, 10);
+CI_table = zeros(nrits, 10);
+raw_CI_table = zeros(nrits, 5);
+raw_recovered = zeros(nrits, 5);
     for i = 1:nrits
 % counter=0;
 % corr_table = zeros(length(bs) * length(lrs) * length(gamma) * length(ws),8);
@@ -98,6 +98,7 @@ raw_recovered = zeros(nrits, 4);
         b_i = rand * 10;        
         g_i = rand;
         w_i = rand;
+        l_i = rand;
         
 %         alpha_sample = rand;
 %         alpha_evoked = rand;
@@ -106,7 +107,7 @@ raw_recovered = zeros(nrits, 4);
 %         w = rand;
         
 
-        disp(['Iteration ' num2str(i) ' recovering for true parameters: alpha: ', num2str(lr_i), ' beta: ', num2str(b_i),' w: ', num2str(w_i), ' gamma: ', num2str(g_i) ])
+        disp(['Iteration ' num2str(i) ' recovering for true parameters: alpha: ', num2str(lr_i), ' beta: ', num2str(b_i),' w: ', num2str(w_i), ' gamma: ', num2str(g_i), ' lambda: ', num2str(l_i) ])
     %         for i = 1:nrits
 
     %                     disp(['Iteration ', num2str(i), ' of ', num2str(nrits) ' of nstate=' num2str(nstates)])
@@ -119,7 +120,7 @@ raw_recovered = zeros(nrits, 4);
         % Simulation
         
 %         % If TD model
-        x = [lr_i b_i lambda w_i g_i];
+        x = [lr_i b_i l_i w_i g_i ];
         output = MBMF_stochastic_1choice_rew_nstates_decay_sim(x,rewards, states_total, nstates);
 
         % If sampler model
@@ -135,7 +136,7 @@ raw_recovered = zeros(nrits, 4);
     %         end
     %     avg = mean(avg_param,1); % will result in four params
 %         corr_table(i, :) = [b_i lr_i w_i g_i results.x_recovered];
-        corr_table(i, :) = [lr_i results.alpha b_i results.beta w_i results.w g_i results.gamma];
+        corr_table(i, :) = [lr_i results.alpha b_i results.beta w_i results.w g_i results.gamma l_i results.lambda];
         raw_recovered(i,:) = results.x_recovered;
         rawInterval = sqrt(diag(inv(squeeze(results.hessian))));
 %         CI_table(i, :) = rawInterval';
@@ -150,7 +151,9 @@ raw_recovered = zeros(nrits, 4);
         CI_table(i,5) = 1./[1+exp(-upper_bound(3))]; % transformed upper bound for w
         CI_table(i,6) = 1./[1+exp(-lower_bound(3))]; % transformed lower bound for w
         CI_table(i,7) = 1./[1+exp(-upper_bound(4))]; % transformed upper bound for gamma
-        CI_table(i,8) = 1./[1+exp(-lower_bound(4))]; % transformed lower bound for gamma        
+        CI_table(i,8) = 1./[1+exp(-lower_bound(4))]; % transformed lower bound for gamma   
+        CI_table(i,9) = 1./[1+exp(-upper_bound(5))]; % transformed upper bound for lambda
+        CI_table(i,10) = 1./[1+exp(-lower_bound(5))]; % transformed lower bound for lambda 
 
                 
     end

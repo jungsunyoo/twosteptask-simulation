@@ -11,7 +11,7 @@ lr = params(1);
 beta = params(2);
 w = params(3);
 gamma = params(4);
-lambda = 0.5;
+lambda = params(5);
 
 tr = 0.7;                   % common transition probability
 
@@ -25,7 +25,7 @@ lr              =  0 + (1 * (1./[1+exp(-lr)]));
 beta            =  0 + (10 * (1./[1+exp(-beta)]));
 w               =  0 + (1 * (1./[1+exp(-w)]));
 gamma           =  0 + (1 * (1./[1+exp(-gamma)]));
-
+lambda           =  0 + (1 * (1./[1+exp(-lambda)]));
 
 %   Initialize variables
 % vals = [0 0]; %initial expected values for the bandits
@@ -109,6 +109,7 @@ if (true)
     nloglik = nloglik - log(flags.pp_beta(beta));
     nloglik = nloglik - log(flags.pp_gamma(gamma));
     nloglik = nloglik - log(flags.pp_w(w));
+    nloglik = nloglik - log(flags.pp_lambda(lambda));
 
 end
 

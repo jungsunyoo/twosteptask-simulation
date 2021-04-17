@@ -23,7 +23,7 @@ gamma = true_params(6);
 
 % Prior distributions for parameters
 flags.pp_alpha = @(x)(pdf('beta', x, 1.1, 1.1));                  % Beta prior for \alphas (from Daw et al 2011 Neuron)
-flags.pp_kappa = @(x)(pdf('beta', x, 1.1, 1.1));                  % Beta prior for \alphas (from Daw et al 2011 Neuron)
+% flags.pp_kappa = @(x)(pdf('beta', x, 1.1, 1.1));                  % Beta prior for \alphas (from Daw et al 2011 Neuron)
 flags.pp_pi = @(x)(pdf('beta', abs(x), 1.1, 1.1));                % symmetric Beta prior for \alpha bump (from Daw et al 2011 Neuron)
 % flags.pp_beta = @(x)(pdf('gamma', x, 1.2, 5));                  % Gamma prior for softmax \beta (from Daw et al 2011 Neuron)
 flags.pp_beta = @(x)(pdf('beta', x/10, 1.1, 1.1));                % Beta prior for \alphas (from Daw et al 2011 Neuron)
@@ -32,7 +32,7 @@ flags.pp_beta = @(x)(pdf('beta', x/10, 1.1, 1.1));                % Beta prior f
 % yjs added priors
 flags.pp_gamma =  @(x)(pdf('beta', x, 1.1, 1.1));
 flags.pp_w =  @(x)(pdf('beta', x, 1.1, 1.1));
-
+flags.pp_lambda =  @(x)(pdf('beta', x, 1.1, 1.1));
 
 % Load simulated data
 % simData = load(data);
