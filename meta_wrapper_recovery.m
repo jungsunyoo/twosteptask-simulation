@@ -10,8 +10,9 @@ for nstates = 2:5
 %     nrtrials = 100 * size(nchoosek(1:nstates,2),1);
     clearvars -except nstates nrtrials nrits
 %     data = wrapper_nstates(1000,nstates, nrtrials);
-    data = wrapper_nstates_decay_recovery(nrits,nstates, nrtrials);
-    savename = ['recovery_counterfactual_lambda_',num2str(nstates),'states_5params_nrits',num2str(nrits),'.mat'];
+    data = wrapper_2choices_nstates_decay_recovery(nrits,nstates, nrtrials);
+    
+    savename = ['recovery_2choices_',num2str(nstates),'states_5params_nrits',num2str(nrits),'.mat'];
     save(savename,'data');
 end
 

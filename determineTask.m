@@ -34,7 +34,7 @@ choices = [];
 %     choices = input('One or two second-level choices?  ');
 % end
 
-choices = 1;
+choices = 2;
 
 rewards = [];
 % while (isempty(rewards)) || (rewards~=1&&rewards~=2)

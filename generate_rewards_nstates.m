@@ -13,19 +13,64 @@ bounds = sort(bounds);
 rewards = zeros(nrtrials,nstates,choices);
 div = floor(nstates/2);
 
-
-% if rand < .5
 if rand < .5
-%     x = [0.6, 0.4, 0.6, 0.4, 0.6];
-%         x = [0.6 0.4];
-    x = [ones([div,1])*0.6; ones([nstates-div,1])*0.4];
+    if rand < .5
+        x = [0.6 0.4];
+    else
+        x = [0.4 0.6];
+    end
+    if choices == 2
+        if rand < .5
+            x = [x; [0.25, 0.75]];
+        else
+            x = [x; [0.75, 0.25]];
+        end
+    end
 else
-    x = [ones([div,1])*0.4; ones([nstates-div,1])*0.6];
-%     x = [0.4, 0.6, 0.4, 0.6, 0.4];
-%         x = [0.4 0.6];
+    if rand < .5
+        x = [0.4, 0.6];
+    else
+        x = [0.6, 0.4];
+    end
+    if choices == 2
+        if rand < .5
+            x = [[0.25 .75]; x];
+        else
+            x = [[0.75 0.25]; x];
+        end
+    end
 end
 
-x = x(randperm(length(x)));
+if nstates>2
+    for i = 1:(nstates-2)
+        if rem(i,2) == 1
+            if rand < .5
+                x = [x; [0.6 0.4]];
+            else
+                x = [x; [0.4 0.6]];
+            end
+        else
+            if rand < .5
+                x = [x; [0.75 0.25]];
+            else
+                x = [x; [0.25 0.75]];
+            end
+        end
+    end
+end
+
+% if rand < .5
+% if rand < .5
+% %     x = [0.6, 0.4, 0.6, 0.4, 0.6];
+% %         x = [0.6 0.4];
+%     x = [ones([div,1])*0.6; ones([nstates-div,1])*0.4];
+% else
+%     x = [ones([div,1])*0.4; ones([nstates-div,1])*0.6];
+% %     x = [0.4, 0.6, 0.4, 0.6, 0.4];
+% %         x = [0.4 0.6];
+% end
+% 
+% x = x(randperm(length(x)));
 % if choices == 2
 %     if rand < .5
 %         x = [x; [0.25, 0.75]];
