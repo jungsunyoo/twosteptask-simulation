@@ -1,3 +1,10 @@
-*.mat
 *.png
 *.fig
+*.sub
+*.err
+*.out
+taskStructures/
+results/
+lbub_0-1/
+dontuse_results/
+
