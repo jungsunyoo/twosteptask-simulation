@@ -86,8 +86,9 @@ for i = 1:nrits
         
         for b_i = 1:length(bs) % and inverse temperatures
             
-            rewardrate = zeros(1,length(ws));
+            
             for g_i = 1:length(gamma)
+                rewardrate = zeros(1,length(ws));
                 for w_i = 1:length(ws)
                 
                 
@@ -95,7 +96,7 @@ for i = 1:nrits
                     % YJS added
     %                 data.simulationfunction = 'MBMF_stochastic_1choice_rew_nstates_sim';
     %                 output = eval([data.simulationfunction,'(x,rewards, states_total, nstates)']); % simulate behavior
-                    output = MBMF_stochastic_1choice_rew_nstates_decay_sim(x,rewards, states_total, nstates);
+                    output = MBMF_stochastic_2choices_p_nstates_decay_sim(x,rewards, states_total, nstates);
 
                     rewardrate(w_i) = sum(output.rewards)/length(output.rewards); % store reward rate for each value of w
                 end 
@@ -116,8 +117,8 @@ data.bs = bs;
 data.lambda = lambda;
 data.gamma = gamma;
 
-cd /Users/yoojungsun0/simulation/tradeoffs/simulations/results/TD
+% cd /Users/yoojungsun0/simulation/tradeoffs/simulations/results/TD
 
-eval(['save MBMF_stochastic_1choice_rew_', num2str(nstates) ,'states_decay_sim data']);
+eval(['save MBMF_stochastic_2choices_p_', num2str(nstates) ,'states_decay_sim data']);
 
 end
