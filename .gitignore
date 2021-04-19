@@ -3,6 +3,7 @@
 *.sub
 *.err
 *.out
+MBMF*.mat
 taskStructures/
 results/
 lbub_0-1/
